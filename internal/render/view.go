@@ -160,15 +160,24 @@ func (v *View) Render(w http.ResponseWriter, r *http.Request, viewName string, d
 	useData := utils.StructSafe(data)
     sess := session.FromContext(r.Context())
 	csrf := GetCSRF(r)
-	authData := auth.GetAuthData(sess)
+
+	var authData any
+	var flash map[string]any
+	var oldData map[string]any
+
+	if sess != nil {
+		authData = auth.GetAuthData(sess)
+		flash = sess.GetAllFlash()
+		oldData = sess.GetAllOld()
+	}
 
 	// Define template data for globlal use in templates
 	templateData := TemplateData{
 		CSRF: csrf,
 		Auth: authData,
 		Data: useData,
-		Flash: sess.GetAllFlash(),
-        OldData:   sess.GetAllOld(),
+		Flash: flash,
+        OldData:   oldData,
 		Request: &RequestProps{
 			Path:   r.URL.Path,
 			Method: r.Method,
