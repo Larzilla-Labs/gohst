@@ -118,7 +118,7 @@ func CoarsenIPv6(ip string) string {
 	if parsed.To4() != nil {
 		return ip
 	}
-	// Zero-out the last 8 bytes to get a /64. 
+	// Zero-out the last 8 bytes to get a /64.
 	mask := net.CIDRMask(64, 128)
 	masked := parsed.Mask(mask)
 	return masked.String() + "/64"
