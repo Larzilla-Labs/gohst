@@ -12,5 +12,6 @@ func InitConfig(envName ...string) {
 	initEnv(env)
 	initSession()
 	initVite()
+	initRateLimit()
 
 }
